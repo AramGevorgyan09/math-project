@@ -1,22 +1,34 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import TresScene from '@/components/TresScene.vue'
+import CustomSelect from './components/CustomSelect.vue'
+import { meshes } from './types/models'
 
-const cylinderRadius = ref(2)
-const cylinderHeight = ref(4)
-const cylinderColor = ref('#182d8e')
+const allMeshes = reactive<meshes[]>([meshes.Sphere, meshes.Cylinder, meshes.Cone])
+
+const mesh = ref<meshes>(meshes.Sphere)
+const radius = ref(2)
+const height = ref(4)
+const color = ref('#182d8e')
+
+const selectMesh = (index: number) => {
+  if (allMeshes[index]) {
+    mesh.value = allMeshes[index]
+  }
+}
 </script>
 
 <template>
   <main>
-    <TresScene :cylinderRadius="cylinderRadius" :cylinderHeight="cylinderHeight" :cylinderColor="cylinderColor" />
+    <TresScene :mesh-type="mesh" :radius="radius" :height="height" :color="color" />
 
     <div class="cylinder-parameters">
       <h2>Cylinder Parameters</h2>
 
-      <input type="number" placeholder="Cylinder Radius" v-model="cylinderRadius">
-      <input type="number" placeholder="Cylinder Height" v-model="cylinderHeight">
-      <input type="color" placeholder="Cylinder Color" v-model="cylinderColor">
+      <CustomSelect :options="allMeshes" :current-option-index="0" :select-option="selectMesh" :width="200" />
+      <input type="number" placeholder="Radius" v-model="radius" v-if="radius">
+      <input type="number" placeholder="Height" v-model="height">
+      <input type="color" placeholder="Color" v-model="color">
     </div>
   </main>
 </template>
