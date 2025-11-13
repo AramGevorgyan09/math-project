@@ -1,47 +1,41 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { ref } from 'vue'
+import TresScene from '@/components/TresScene.vue'
+
+const cylinderRadius = ref(2)
+const cylinderHeight = ref(4)
+const cylinderColor = ref('#182d8e')
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
   <main>
-    <TheWelcome />
+    <TresScene :cylinderRadius="cylinderRadius" :cylinderHeight="cylinderHeight" :cylinderColor="cylinderColor" />
+
+    <div class="cylinder-parameters">
+      <h2>Cylinder Parameters</h2>
+
+      <input type="number" placeholder="Cylinder Radius" v-model="cylinderRadius">
+      <input type="number" placeholder="Cylinder Height" v-model="cylinderHeight">
+      <input type="color" placeholder="Cylinder Color" v-model="cylinderColor">
+    </div>
   </main>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
+.cylinder-parameters {
+    position: fixed;
+    top: 50%;
+    right: 100px;
+    transform: translateY(-50%);
+    background-color: #002e92;
+    color: #fff;
+    display: grid;
+    gap: 20px;
+    padding: 40px;
+    border-radius: 20px;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.cylinder-parameters h2 {
+    padding: 0 40px;
 }
 </style>
