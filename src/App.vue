@@ -14,7 +14,7 @@ const l = ref(Math.round(Math.sqrt(r.value * r.value + h.value * h.value) * 100)
 
 const calculate = () => {
   r.value = radius.value
-  r.value = height.value
+  h.value = height.value
 }
 
 const getTwoNumbers = (n: number): number => {
