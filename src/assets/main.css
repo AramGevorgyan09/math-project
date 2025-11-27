@@ -6,23 +6,27 @@
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 100%;
-  transition: 0.3s;
   box-sizing: border-box;
+  transition: 0.3s;
 }
 
 input {
   background-color: var(--main-color);
   color: #fff;
   border: 2px solid #fff;
-  outline: none;
-  padding: 15px 20px;
+  outline: 2px solid transparent;
+  padding: 15px;
   font-size: 16px;
+}
+
+input::placeholder {
+  color: #ccc;
 }
 
 input:focus {
   background-color: var(--main-color);
   color: #fff;
+  outline-color: #fff;
 }
 
 input::-webkit-outer-spin-button,
@@ -34,4 +38,20 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   appearance: textfield;
   -moz-appearance: textfield;
+}
+
+button {
+  width: 250px;
+  background-color: var(--main-color);
+  color: #fff;
+  padding: 15px;
+  outline: none;
+  border: 2px solid #fff;
+  border-radius: 100px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #fff;
+  color: var(--main-color);
 }

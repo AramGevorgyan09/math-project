@@ -1,53 +1,87 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import TresScene from '@/components/TresScene.vue'
-import CustomSelect from './components/CustomSelect.vue'
-import { meshes } from './types/models'
 
-const allMeshes = reactive<meshes[]>([meshes.Sphere, meshes.Cylinder, meshes.Cone])
+const pi = Math.round(Math.PI * 100) / 100
 
-const mesh = ref<meshes>(meshes.Sphere)
+const r = ref(2)
+const h = ref(3)
+
 const radius = ref(2)
-const height = ref(4)
-const color = ref('#182d8e')
+const height = ref(3)
 
-const selectMesh = (index: number) => {
-  if (allMeshes[index]) {
-    mesh.value = allMeshes[index]
-  }
+const l = ref(Math.round(Math.sqrt(r.value * r.value + h.value * h.value) * 100) / 100)
+
+const calculate = () => {
+  r.value = radius.value
+  r.value = height.value
+}
+
+const getTwoNumbers = (n: number): number => {
+  return (Math.round(n * 100) / 100)
 }
 </script>
 
 <template>
   <main>
-    <TresScene :mesh-type="mesh" :radius="radius" :height="height" :color="color" />
+    <TresScene :r="r" :h="h" />
 
-    <div class="cylinder-parameters">
-      <h2>Cylinder Parameters</h2>
+    <div class="cone">
+      <h1>Կոն</h1>
 
-      <CustomSelect :options="allMeshes" :current-option-index="0" :select-option="selectMesh" :width="200" />
-      <input type="number" placeholder="Radius" v-model="radius" v-if="radius">
-      <input type="number" placeholder="Height" v-model="height">
-      <input type="color" placeholder="Color" v-model="color">
+      <input type="number" placeholder="Շառավիղ" v-model="radius">
+      <input type="number" placeholder="Բարձրություն" v-model="height">
+      <button type="button" @click="calculate">Հաշվել</button>
+
+      <p>
+        <span class="name">Կողմնային մակերևույթի մակերես՝<br></span>
+        <span class="formula">S<sub>կ</sub> = &#x3C0;rl &#8776; {{ pi }} &#215; {{ r }} &#215; {{ l }} = {{ getTwoNumbers(pi * r * l) }}<br></span>
+        <span class="name">Հիմքի մակերես՝<br></span>
+        <span class="formula">S<sub>հ</sub> = &#x3C0;r<sup>2</sup> &#8776; {{ pi }} &#215; {{ r }} &#215; {{ r }} = {{ getTwoNumbers(pi * r * r) }}<br></span>
+        <span class="name">Լրիվ մակերևութային մակերես՝<br></span>
+        <span class="formula">S<sub>լ</sub> = S<sub>կ</sub> + S<sub>հ</sub> = &#x3C0;rl + &#x3C0;r<sup>2</sup> &#8776; {{ pi }} &#215; {{ r }} &#215; {{ l }} + {{ pi }} &#215; {{ r }} &#215; {{ r }} = {{ getTwoNumbers(pi * r * l + pi * r * r) }}</span>
+      </p>
     </div>
   </main>
 </template>
 
 <style scoped>
-.cylinder-parameters {
-    position: fixed;
-    top: 50%;
-    right: 100px;
-    transform: translateY(-50%);
-    background-color: #002e92;
-    color: #fff;
-    display: grid;
-    gap: 20px;
-    padding: 40px;
-    border-radius: 20px;
+.cone {
+  position: fixed;
+  top: 50%;
+  right: 40px;
+  transform: translateY(-50%);
+  background-color: #002e92;
+  color: #fff;
+  display: grid;
+  gap: 20px;
+  padding: 40px;
+  border-radius: 20px;
 }
 
-.cylinder-parameters h2 {
-    padding: 0 40px;
+h1 {
+  text-align: center;
+}
+
+button {
+  justify-self: center;
+}
+
+p {
+  max-width: 400px;
+  display: grid;
+  gap: 15px;
+}
+
+.name {
+  font-size: 16px;
+  color: #ddd;
+}
+
+.formula {
+  font-size: 20px;
+  border: 2px solid #fff;
+  padding: 10px;
+  line-height: 150%;
 }
 </style>
