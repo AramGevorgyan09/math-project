@@ -1,6 +1,23 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import TresScene from '@/components/TresScene.vue'
+
+const calculator = ref<HTMLDivElement | null>(null)
+
+const calculatorTop = ref<string | number>('unset')
+const calculatorBottom = ref<string | number>('45px')
+const calculatorTranslation = ref<string | number>('-50%, 100%')
+const arrowRotateX = ref<string | number>(0)
+
+const toggleCalculator = () => {
+  calculatorBottom.value = calculatorBottom.value == '45px' ? 0 : '45px'
+  calculatorTranslation.value = calculatorTranslation.value == '-50%' ? '-50%, 100%' : '-50%'
+  arrowRotateX.value = arrowRotateX.value == 0 ? '180deg' : 0
+
+  if (calculator.value?.clientHeight && calculator.value?.clientHeight + 30 > window.innerHeight) {
+    calculatorTop.value = calculatorTop.value == '30px' ? 'unset' : '30px'
+  }
+}
 
 const pi = Math.round(Math.PI * 100) / 100
 
@@ -15,11 +32,17 @@ const l = ref(Math.round(Math.sqrt(r.value * r.value + h.value * h.value) * 100)
 const calculate = () => {
   r.value = radius.value
   h.value = height.value
+
+  toggleCalculator()
 }
 
 const getTwoNumbers = (n: number): number => {
   return (Math.round(n * 100) / 100)
 }
+
+onMounted(() => {
+  calculator.value = document.querySelector('.cone')
+})
 </script>
 
 <template>
@@ -27,6 +50,8 @@ const getTwoNumbers = (n: number): number => {
     <TresScene :r="r" :h="h" />
 
     <div class="cone">
+      <img src="@/assets/images/arrow-up.png" alt="Arrow" @click="toggleCalculator">
+
       <h1>Կոն</h1>
 
       <input type="number" placeholder="Շառավիղ" v-model="radius">
@@ -48,15 +73,28 @@ const getTwoNumbers = (n: number): number => {
 <style scoped>
 .cone {
   position: fixed;
-  top: 50%;
-  right: 40px;
-  transform: translateY(-50%);
+  top: v-bind(calculatorTop);
+  bottom: v-bind(calculatorBottom);
+  left: 50%;
+  transform: translate(v-bind(calculatorTranslation));
+  transition: 0.5s;
   background-color: #002e92;
   color: #fff;
   display: grid;
   gap: 20px;
   padding: 40px;
-  border-radius: 20px;
+  border-radius: 30px 30px 0 0;
+  overflow: auto;
+}
+
+img {
+  width: 20px;
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%) rotateX(v-bind(arrowRotateX));
+  transition: 0.5s;
+  cursor: pointer;
 }
 
 h1 {

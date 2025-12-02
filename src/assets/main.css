@@ -8,6 +8,7 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   box-sizing: border-box;
   transition: 0.3s;
+  -webkit-tap-highlight-color: transparent;
 }
 
 input {
@@ -55,4 +56,10 @@ button {
 button:hover {
   background-color: #fff;
   color: var(--main-color);
+}
+
+@media screen and (min-width: 768px) {
+  ::-webkit-scrollbar {
+    display: none;
+  }
 }
